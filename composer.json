@@ -1,0 +1,19 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Lsclh\\Fcurl\\": "src/"
+        }
+    },
+    "name": "lsclh/fcurl",
+    "description": "复制easyswoole3.x的curl调用例子",
+    "type": "library",
+    "authors": [
+        {
+            "name": "cheng",
+            "email": "1019759208@qq.com"
+        }
+    ],
+
+    "minimum-stability": "dev",
+    "require": {}
+}
