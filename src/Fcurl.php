@@ -23,7 +23,7 @@ use EasySwoole\Curl\Response;
  *
  * $request = new Curl();
     $params = [
-        'query' => [
+        'get' => [
             'nobase64' => 1,
             'musicid' => '109332150',
             'inCharset' => 'utf8',
@@ -46,7 +46,7 @@ class Fcurl
     /**
      * @param string $method
      * @param string $url
-     * @param array|null $params
+     * @param array|null $params ['get'=>'get数据','post'=>'post数据','header'=>'请求头','opt'=>['其他的setopt数据'=>'1243']]
      * @return Response
      */
     public function request(string $method, string $url, array $params = null): Response
@@ -56,7 +56,7 @@ class Fcurl
 
         switch( $method ){
             case 'GET' :
-                if( $params && isset( $params['query'] ) ){
+                if( $params && isset( $params['get'] ) ){
                     foreach( $params['query'] as $key => $value ){
                         $request->addGet( new Field( $key, $value ) );
                     }
@@ -67,7 +67,7 @@ class Fcurl
                     foreach( $params['form_params'] as $key => $value ){
                         $request->addPost( new Field( $key, $value ) );
                     }
-                }elseif($params && isset( $params['body'] )){
+                }elseif($params && isset( $params['post'] )){
                     if(!isset($params['header']['Content-Type']) ){
                         $params['header']['Content-Type'] = 'application/json; charset=utf-8';
                     }
@@ -78,6 +78,7 @@ class Fcurl
                 throw new \InvalidArgumentException( "method eroor" );
                 break;
         }
+        $request->setUserOpt(['CURLOPT_HTTPHEADER'=>['Expect:']]);
 
         if( isset( $params['header'] ) && !empty( $params['header'] ) && is_array( $params['header'] ) ){
             foreach( $params['header'] as $key => $value ){
